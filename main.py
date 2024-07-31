@@ -4,12 +4,15 @@ import argparse, os
 class printFolder:
     def __init__(self, args):
         self.path = args.path
+        self.depth = args.depth
         self.output = f"{os.path.basename(os.path.dirname(self.path))}/"
-        self.printFolderTree(args.path, " ")
+        self.printFolderTree(args.path, " ", 1)
         with open(args.output, "w") as f:
             f.write(self.output)
 
-    def printFolderTree(self, path, prefix):
+    def printFolderTree(self, path, prefix, depth):
+        if depth > self.depth:
+            return
         if len(os.listdir(path)) == 0:
             return
         lastFile = os.listdir(path)[-1]
@@ -23,6 +26,7 @@ class printFolder:
                 self.printFolderTree(
                     os.path.join(path, file),
                     prefix + ("    " if file == lastFile else "┃   "),
+                    depth + 1,
                 )
             else:
                 if file == lastFile:
@@ -36,6 +40,9 @@ if __name__ == "__main__":
     parser.add_argument("path", help="Path where you want to create.", type=str)
     parser.add_argument(
         "-o", "--output", help="Output file name.", type=str, default="output.txt"
+    )
+    parser.add_argument(
+        "-d", "--depth", help="Depth of the folder tree.", type=int, default=3
     )
     args = parser.parse_args()
     printFolder(args)
