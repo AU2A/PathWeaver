@@ -1,7 +1,7 @@
 import argparse, fnmatch, os
 
 
-class printFolder:
+class PathWeaver:
     def __init__(self, args):
         self.depth = args.depth
         self.ignore = []
@@ -70,4 +70,4 @@ if __name__ == "__main__":
         "-d", "--depth", help="Depth of the folder tree.", type=int, default=3
     )
     args = parser.parse_args()
-    printFolder(args)
+    PathWeaver(args)
